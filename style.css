@@ -1,0 +1,15 @@
+body{overflow: hidden;
+background-color: teal;
+border: 0;
+margin: 0;
+padding: 0;
+}
+#gamescreen{
+    position: absolute;
+}
+#background{position: relative;
+    z-index: -1;
+    right: 404px;
+
+}
+p{text-align: center;}
