@@ -10,6 +10,7 @@
 <body>
     <canvas id="tela" width="400" height="600" id="gamescreen"></canvas>
         <img src="background.png"  id="background" >
+        <div id="gameoverbox"><div id="ranking">Ranking</div></div>
 <script>
 // Space Invaders
 // Autor: Ayo Oyewole
@@ -24,6 +25,8 @@ function advance(event) {
     }
     
     window.addEventListener('keypress', advance);
+
+var NumeroDeAliensRestantes = 55
 var tela
 var c;
 var posNave = -20
@@ -64,17 +67,15 @@ iniciar(); // Chama função inicial do jogo
 function iniciar() {
     tela = document.getElementById("tela");
     c = tela.getContext("2d");
-
+    document.getElementById("gameoverbox").style.zIndex = -2;
     posicionarAlien();
     carregarImagens();
-	setInterval("moverAliens()", intervalo);
+	setInterval("moverAliens()",  intervalo);
     setInterval("alienAtingido()", 6);
-    console.log(aliensRestantes)
     setInterval("novaNave()", 4000)
 }    
 function novaNave(){
     setInterval("moverNave()",10);
-    console.log('movendo nave')
 }
 
 function posicionarAlien() {
@@ -141,6 +142,7 @@ function moverAliens(){
                 }
             }
         }
+            
             }
     
     function alienAtingido(){
@@ -148,6 +150,9 @@ function moverAliens(){
         if ((laserY >= (alienY + aliensRestantes[i].posY)) && (laserY <= (alienY + aliensRestantes[i].posY + 20)) && 
             (impactoLaserX >= (alienX + aliensRestantes[i].posX - 5)) && (impactoLaserX <= (alienX + aliensRestantes[i].posX + 18))){
             if (!aliensRestantes[i].foiAtingido){
+                NumeroDeAliensRestantes--
+                console.log(NumeroDeAliensRestantes)
+                if(NumeroDeAliensRestantes == 0){fimDeJogo()}
                 c.clearRect((alienX + aliensRestantes[i].posX - 1), (alienY + aliensRestantes[i].posY - 1), 20, 25);
                 aliensRestantes[i].foiAtingido = true;
                 if(aliensRestantes[i]["posY"] == 175){pontos+=10}
@@ -191,6 +196,8 @@ function fimDeJogo(){
     c.fillStyle = "white";
     c.fillText("Aperte enter para começar novamente", 200,500);
     onkeydown = null;
+    document.getElementById("gameoverbox").style.zIndex = 3;
+
 }
 
 function moverCanhao(tecla){
