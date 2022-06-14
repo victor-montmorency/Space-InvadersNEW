@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,9 +10,12 @@
 <body>
     <canvas id="tela" width="400" height="600" id="gamescreen"></canvas>
         <img src="background.png"  id="background" >
-        <div id="gameoverbox"><div id="ranking">Ranking</div></div>
-
+        <div id="gameoverbox"><div id="ranking">RANKING</div></div>
+        <div id="newgamebox">
+            <div id="newgame" onclick="iniciar()">COMEÇAR NOVO JOGO</div>
+        </div>
 <script>
+    
 // Space Invaders
 // Autor: Ayo Oyewole
 // Adaptado por: Gilson Pereira
@@ -26,6 +29,23 @@ function advance(event) {
     }
     
     window.addEventListener('keypress', advance);
+var somTiro = new Audio
+somTiro.src = "somtiro.wav"
+
+var SomAlienAtingido = new Audio
+SomAlienAtingido.src = "somAlienAtingido.wav"
+
+var somnave = new Audio
+somnave.src = "somnave.wav"
+
+backgroundmusic = new Audio
+backgroundmusic.src = "backgroundmusic.wav"
+
+somnaveatingida = new Audio
+somnaveatingida.src = "naveatingida.wav"
+
+somfimdejogo = new Audio
+somfimdejogo = "somfimdejogo.wav"
 
 var naveeliminada = false
 var NumeroDeAliensRestantes = 55
@@ -60,11 +80,10 @@ const TECLA_ACIMA = 38;
 
 onkeydown = moverCanhao; // Define função chamada ao se pressionar uma tecla
 
-iniciar(); // Chama função inicial do jogo
 
 
 // Sub-rotinas (funções)
-var timing = 20
+function iniciarloop(){var timing = 20
 
 function loop() {
   moverAliens();
@@ -73,11 +92,12 @@ function loop() {
   window.setTimeout(loop, timing);
   
 }
-loop();
+loop();}
 
-
-setTimeout(() => {
+function navesVermelhas(){
+    setTimeout(() => {
     posNave = -19
+    somnave.play()
     var timer = setInterval(()=>{
     c.drawImage(nave, posNave,40)
     posNave+=1
@@ -91,6 +111,7 @@ setTimeout(() => {
 setTimeout(() => {
     naveeliminada = false
     posNave = -19
+    somnave.play()
         var timer2 = setInterval(()=>{
         c.drawImage(nave, posNave,40)
         posNave+=1
@@ -104,6 +125,7 @@ setTimeout(() => {
     setTimeout(() => {
         naveeliminada = false
         posNave = 400
+        somnave.play()
         var timer = setInterval(()=>{
         c.drawImage(nave, posNave,40)
         posNave-=1
@@ -116,6 +138,7 @@ setTimeout(() => {
     setTimeout(() => {
         naveeliminada = false
         posNave = 400
+        somnave.play()
         var timer = setInterval(()=>{
         c.drawImage(nave, posNave,40)
         posNave-=1
@@ -125,15 +148,20 @@ setTimeout(() => {
 }
     },10);
     }, 10000);
+}
 
 function iniciar() {
         tela = document.getElementById("tela");
         c = tela.getContext("2d");
         document.getElementById("gameoverbox").style.zIndex = -2;
+        document.getElementById("newgamebox").style.zIndex = -2;
         posicionarAlien();
         carregarImagens();
+        navesVermelhas()
+        backgroundmusic.play()
         setInterval("alienAtingido()", 6);    
         setInterval("naveatingida()", 6)
+        iniciarloop()
     }
 
 
@@ -150,7 +178,6 @@ function posicionarAlien() {
         }
     }
 }    
-
 function carregarImagens() {
     canhao = new Image();
     canhao.src = "canhao.png";
@@ -170,8 +197,8 @@ function carregarImagens() {
     nave = new Image;
     nave.src = "nave.png"
 }
-
 function moverAliens(){
+
     if (posicao <= 65){
         alienX += 1;
         posicao += 1;
@@ -218,9 +245,7 @@ function moverAliens(){
                 if(aliensRestantes[i]["posY"] == 115){pontos+=20}
                 if(aliensRestantes[i]["posY"] == 85){pontos+=20}
                 if(aliensRestantes[i]["posY"] == 55){pontos+=40}
-
-
-                
+                SomAlienAtingido.play()
                 c.fillStyle = "black"
                 c.fillRect(90,0,50,25)
                 c.clearRect(impactoLaserX, laserY, 6, 19);
@@ -239,12 +264,18 @@ function moverAliens(){
 
 }
 
+
+
 function naveatingida(){
-    if(laserY < 80 && laserX<posNave+50 && laserX>posNave){
+    if(laserX<posNave+50 && laserX>posNave  && alienY>laserY){
         if(naveeliminada == false){
+            somnave.pause()
+            somnave.currentTime = 0;
+
             c.fillStyle = "black"
             c.fillRect(90,0,50,25)
             pontos += Math.floor(Math.random() * 100);
+            somnaveatingida.play()
 }
         naveeliminada = true
     }
@@ -268,6 +299,9 @@ function fimDeJogo(){
     c.fillText("Aperte enter para começar novamente", 200,500);
     onkeydown = null;
     document.getElementById("gameoverbox").style.zIndex = 3;
+    backgroundmusic.pause()
+    somnave.currentTime = 0;
+
 
 }
 
@@ -289,6 +323,7 @@ function moverCanhao(tecla){
     }
     
     if ((codigo == TECLA_ACIMA) && !inicioLaser){
+        somTiro.play()
         inicioLaser = true;
         c.drawImage(laser, laserX, laserY);
         impactoLaserX = laserX;
@@ -296,13 +331,10 @@ function moverCanhao(tecla){
     }
 }
 
-
-
 function dispararLaser(){
     if (inicioLaser && (laserY >= 60)){
         laserY -= 10;
         c.clearRect(impactoLaserX, (laserY + 10), 6, 19);
-		
         if (laserY >= 70){
             c.drawImage(laser, impactoLaserX, laserY);
         }
