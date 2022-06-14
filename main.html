@@ -10,9 +10,23 @@
 <body>
     <canvas id="tela" width="400" height="600" id="gamescreen"></canvas>
         <img src="background.png"  id="background" >
-        <div id="gameoverbox"><div id="ranking">RANKING</div></div>
+        <div id="gameoverbox"><div id="ranking" onclick="showranking()">RANKING</div></div>
         <div id="newgamebox">
             <div id="newgame" onclick="iniciar()">COMEÇAR NOVO JOGO</div>
+        </div>
+        <div id="rankingtable">
+            <h1>RANKING</h1>
+            <p id="1"></p>
+            <p id="2"></p>
+            <p id="3"></p>
+            <p id="4"></p>
+            <p id="5"></p>
+            <p id="6"></p>
+            <p id="7"></p>
+            <p id="8"></p>
+            <p id="9"></p>
+            <p id="10"></p>
+            <h2 onclick="fechartelaranking()" id="fechar">Fechar</h2>
         </div>
 <script>
     
@@ -90,8 +104,12 @@ function iniciarloop(){var timing = 20
 
 function loop() {
   moverAliens();
-  if(NumeroDeAliensRestantes <45){timing = 15}
-  if(NumeroDeAliensRestantes <25){timing = 10}
+  if(NumeroDeAliensRestantes <45){timing = 15
+    backgroundmusic.playbackRate = 1.5
+}
+  if(NumeroDeAliensRestantes <25){timing = 10
+    backgroundmusic.playbackRate = 2
+}
   window.setTimeout(loop, timing);
   
 }
@@ -166,6 +184,7 @@ var quartanave = setTimeout(() => {
 }
 
 function iniciar() {
+        console.log(localStorage)
         tela = document.getElementById("tela");
         c = tela.getContext("2d");
         document.getElementById("gameoverbox").style.zIndex = -2;
@@ -348,6 +367,9 @@ function fimDeJogo(){
     jogoganho = true
     pontos += vidas*80
 
+    setTimeout(() => {
+        ranking()
+    }, 1000);
 }
 
 function moverCanhao(tecla){
@@ -390,6 +412,47 @@ function dispararLaser(){
         inicioLaser = false;
         laserY = 510;
     }
+}
+
+function ranking(){
+    var nome = prompt("Digite seu nome para ir para o ranking!")
+    localStorage.setItem(nome, pontos)
+}
+var aux
+
+function showranking(){
+    document.getElementById("rankingtable").style.zIndex = 20;
+var result 
+var aux
+var aux2
+var result2 = []
+  result = Object.entries(localStorage)
+  console.log(result)
+  for(i= 0; i< result.length; i++){
+    aux = {"nome": result[i][0], "pontos": result[i][1]}
+    result2.push(aux)
+  }
+  result2.sort((b, a) => {
+    return a.pontos - b.pontos;
+});
+    console.log(result2)
+
+    document.getElementById('1').innerHTML="1."+ result2[0]["nome"]+ " - "+ result2[0]["pontos"] +" pontos";
+    document.getElementById('2').innerHTML="2."+ result2[1]["nome"]+ " - "+ result2[1]["pontos"] +" pontos";
+    document.getElementById('3').innerHTML="3."+ result2[2]["nome"]+ " - "+ result2[2]["pontos"] +" pontos";
+    document.getElementById('4').innerHTML="4."+ result2[3]["nome"]+ " - "+ result2[3]["pontos"] +" pontos";
+    document.getElementById('5').innerHTML="5."+ result2[4]["nome"]+ " - "+ result2[4]["pontos"] +" pontos";
+    document.getElementById('6').innerHTML="6."+ result2[5]["nome"]+ " - "+ result2[5]["pontos"] +" pontos";
+    document.getElementById('7').innerHTML="7."+ result2[6]["nome"]+ " - "+ result2[6]["pontos"] +" pontos";
+    document.getElementById('8').innerHTML="8."+ result2[7]["nome"]+ " - "+ result2[7]["pontos"] +" pontos";
+    document.getElementById('9').innerHTML="9."+ result2[8]["nome"]+ " - "+ result2[8]["pontos"] +" pontos";
+    document.getElementById('10').innerHTML="10."+ result2[9]["nome"]+ " - "+ result2[9]["pontos"] +" pontos";
+
+
+}
+
+function fechartelaranking(){
+    document.getElementById("rankingtable").style.zIndex = -20;
 }
 </script>
 </body>

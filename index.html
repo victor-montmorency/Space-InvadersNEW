@@ -1,0 +1,16 @@
+<script>
+var result 
+var aux
+var aux2
+var result2 = []
+  result = Object.entries(localStorage)
+  console.log(result)
+  for(i= 0; i< result.length; i++){
+    aux = {"nome": result[i][0], "pontos": result[i][1]}
+    result2.push(aux)
+  }
+  result2.sort((a, b) => {
+    return a.pontos - b.pontos;
+});
+console.log(result2)
+</script>

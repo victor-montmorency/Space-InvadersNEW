@@ -56,3 +56,19 @@ cursor: pointer;}
 
 #newgame:hover{transform: scale(1.3);
 cursor: pointer;}
+#fechar:hover{transform: scale(1.3);
+    cursor: pointer;}
+#rankingtable{
+    font-family: fantasy;
+    font-weight: 100;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 400px;
+    height: 600px;
+    background: brown;
+    color: white;
+    text-align: center;
+    justify-content: center;
+    z-index: -20;
+}
