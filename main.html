@@ -235,9 +235,8 @@ function moverAliens(){
             if (!aliensRestantes[i].foiAtingido){
                 c.clearRect((alienX + aliensRestantes[i].posX - 1), (alienY + aliensRestantes[i].posY - 1), 20, 25);
                 c.drawImage(alien, (alienX + aliensRestantes[i].posX), (alienY + aliensRestantes[i].posY));
-                
-				
                 if ((aliensRestantes[i].posY + alienY + 23) >= 530){
+                    vidas = 0
                     fimDeJogo();
                 }
             }
@@ -261,7 +260,7 @@ function moverAliens(){
                 if(aliensRestantes[i]["posY"] == 55){pontos+=40}
                 SomAlienAtingido.play()
                 c.fillStyle = "black"
-                c.fillRect(90,0,50,25)
+                c.fillRect(90,0,100,25)
                 c.clearRect(impactoLaserX, laserY, 6, 19);
                 laserY = 0;
             
@@ -284,7 +283,7 @@ setTimeout(() => {
 }, 3000);
 function laserinvertido(){
     valorcanhaoX = canhaoX+15
-    base = aliensRestantes[0]["posY"] + alienY
+    base = aliensRestantes[4]["posY"] + alienY
     var intervaloLaserInvertido = setInterval(() => {
     c.drawImage(laser, valorcanhaoX,base )
     base +=1
@@ -298,7 +297,11 @@ function laserinvertido(){
         laserinvertido()
         canhaoatingido.play()
     }
-    if(jogoganho == true || alienY>250){clearInterval(intervaloLaserInvertido)}
+    if(jogoganho == true){clearInterval(intervaloLaserInvertido)}
+    if(alienY>250){clearInterval(intervaloLaserInvertido)
+        c.clearRect(valorcanhaoX,base -19 , 5, 50)
+}
+
     if(base>650){base = aliensRestantes[4]["posY"] + alienY
         valorcanhaoX = canhaoX
 }
@@ -343,6 +346,7 @@ function fimDeJogo(){
     somnave.currentTime = 0;
     somfimdejogo.play()
     jogoganho = true
+    pontos += vidas*80
 
 }
 
